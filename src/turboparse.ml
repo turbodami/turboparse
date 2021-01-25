@@ -17,3 +17,6 @@ type 'a parser =
     {
         run: input -> (input * 'a, error) result
     }
+
+let fail (e: error) =
+    { run = fun _ -> Error e }
