@@ -7,8 +7,19 @@ type section =
         pairs: pair list
     }
 
-let show_section (sec: section) =
-    Printf.printf "{ name = %s; pairs = }"
+let show_pair (p: pair): string =
+    Printf.sprintf "(%s, %s)" key value 
+
+let show_pairs (pair: list): string =
+    pairs
+    |> List.map show_pair
+    |> String.concat ","
+    |> Printf.sprintf "[%s]"
+
+let show_section (sec: section): string =
+    Printf.sprintf "{ name = %s; pairs = %s }" 
+    sec.name 
+    (show_pairs sec.pairs)
 
 let show_sections (sections: section list): string = 
     sections
@@ -36,10 +47,8 @@ let () =
                  |> ini.run
     in
     match result with
-    | Ok (_, sections) -> sections
-                            |> show_section
-                            |> print_endline
+    | Ok (_, sections) -> sections |> show_sections |> print_endline
     | Error error -> Printf.printf 
-                        "Error happened at %d: %s" 
+                        "Error happened at %d: %s\n" 
                         error.pos 
                         error.desc

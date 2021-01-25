@@ -1,8 +1,8 @@
 .PHONY: all
-all: ini ini.bytes
+all: ini.native ini.byte
 
-ini: src/turboparse.ml examples/ini.ml 
-	ocamlfind ocamlopt -I src/ -I examples/ -o ini src/turboparse.ml examples/ini.ml
+ini.native: src/turboparse.ml examples/ini.ml 
+	ocamlfind ocamlopt -I src/ -I examples/ -o ini.native src/turboparse.ml examples/ini.ml
 	
-ini.bytes: src/turboparse.ml examples/ini.ml
-	ocamlfind ocamlc -I src/ -I examples/ -o ini.bytes src/turboparse.ml examples/ini.ml
+ini.byte: src/turboparse.ml examples/ini.ml
+	ocamlfind ocamlc -I src/ -I examples/ -o ini.byte src/turboparse.ml examples/ini.ml
