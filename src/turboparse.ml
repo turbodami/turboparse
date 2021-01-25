@@ -13,7 +13,7 @@ type error =
         pos: int
     }
 
-type parser = 
+type 'a parser = 
     {
         run: input -> (input * 'a, error) result
     }
