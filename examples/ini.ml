@@ -1,4 +1,4 @@
-open Parcoom
+open Turboparse
 
 type key_t = string
 type value_t = string
@@ -36,23 +36,23 @@ let read_whole_file (file_path: string): string =
   close_in ch;
   s
 
-let section_name: string Parcoom.parser =
+let section_name: string Turboparse.parser =
   prefix "[" *> parse_while (fun x -> x != ']') <* any_char
 
 let is_space (x: char) = x == ' ' || x == '\n'
 
-let wss: string Parcoom.parser =
+let wss: string Turboparse.parser =
   parse_while is_space
 
-let pair: pair_t Parcoom.parser =
+let pair: pair_t Turboparse.parser =
   let name = parse_while (fun x -> not (is_space x) && x != '=') in
   (wss *> name <* wss <* prefix "=" <* wss) <*> (name <* wss)
 
-let section: section_t Parcoom.parser =
+let section: section_t Turboparse.parser =
   section_name <*> many pair
   |> map (fun (name, pairs) -> { name = name; pairs = pairs; })
 
-let ini: section_t list Parcoom.parser =
+let ini: section_t list Turboparse.parser =
   many section
 
 let () =
@@ -60,7 +60,7 @@ let () =
   | _ :: file_path :: _ ->
      let result = file_path
                   |> read_whole_file
-                  |> Parcoom.run ini
+                  |> Turboparse.run ini
      in
      (match result with
       | Ok sections -> sections |> show_sections |> print_endline
